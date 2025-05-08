@@ -1,5 +1,6 @@
 import pandas as pd
 from pathlib import Path
+from collections import defaultdict
 
 # Pegando o caminho absoluto de um arquivo, partindo meu caminho atual.
 caminho_arquivo = Path(__file__).parent / 'data/lotofacil.csv'
@@ -129,6 +130,74 @@ class Analise:
         print(f"\nMédia de números pares por sorteio: {media_pares:.2f}")
         print(f"Média de números ímpares por sorteio: {media_impares:.2f}")
 
+# 8. Qual a frequência de aparição de grupos de 5 números sequenciais
+# ou mais que se repetem? Qual grupo mais se repetiu e quantas vezes?
+    def mostrar_frequencia_grupos_sequenciais(self):
+        grupos: dict[tuple[int, ...], int] = defaultdict(int)
+
+        for linha in self.df.loc[:, 'N1':'N15'].values:
+            numeros = sorted(linha)
+            grupo = []
+
+            for i in range(len(numeros)):
+                if i == 0 or numeros[i] == numeros[i-1] + 1:
+                    grupo.append(numeros[i])
+                else:
+                    if len(grupo) >= 5:
+                        grupos[tuple(grupo)] += 1
+                    grupo = [numeros[i]]
+            if len(grupo) >= 5:
+                grupos[tuple(grupo)] += 1
+
+        if grupos:
+            grupo_mais_repetido = max(grupos.items(), key=lambda x: x[1])
+            print("\nGrupos de 5+ números sequenciais mais repetidos:")
+            print(
+                f"Grupo: {grupo_mais_repetido[0]}, Repetições: {grupo_mais_repetido[1]}")
+        else:
+            print("\nNenhum grupo de 5 ou mais números sequenciais foi repetido.")
+
+
+# 9. Qual sorteio teve mais números ímpares?
+#    def mostrar_sorteio_mais_impares(self):
+#         max_impares = 0
+#         sorteio_index: int = -1
+#         numeros_sorteados = []
+
+#         for idx, linha in self.df.loc[:, 'N1':'N15'].iterrows():
+#             numeros = linha.tolist()
+#             impares = sum(1 for n in numeros if n % 2 != 0)
+#             if impares > max_impares:
+#                 max_impares = impares
+#                 sorteio_index = int(idx)
+#                 numeros_sorteados = numeros
+
+#         if sorteio_index != -1:
+#             print(f"\nSorteio com mais números ímpares:")
+#             print(f"Sorteio #{sorteio_index + 1} com {max_impares} ímpares")
+#             print(f"Números sorteados: {sorted(numeros_sorteados)}")
+#         else:
+#             print("Nenhum sorteio encontrado.")
+
+#         print(
+#             f"\nSorteio com mais números ímpares: {max_impares} (Sorteio #{sorteio_index + 1})")
+
+
+# 10. Qual sorteio teve mais números pares?
+
+    def mostrar_sorteio_mais_pares(self):
+        max_pares = 0
+        sorteio_index = None
+
+        for idx, linha in self.df.loc[:, 'N1':'N15'].iterrows():
+            pares = sum(1 for n in linha if n % 2 == 0)
+            if pares > max_pares:
+                max_pares = pares
+                sorteio_index = idx
+
+        print(
+            f"\nSorteio com mais números pares: {max_pares} (Sorteio #{sorteio_index + 1})")
+
 
 if __name__ == '__main__':
     analise = Analise(caminho_arquivo)
@@ -147,3 +216,8 @@ if __name__ == '__main__':
     print(60*'-')
     analise.mostrar_media_pares_impares()
     print(60*'-')
+    analise.mostrar_frequencia_grupos_sequenciais()
+    print(60*'-')
+    # analise.mostrar_sorteio_mais_impares()
+    print(60*'-')
+    analise.mostrar_sorteio_mais_pares()
