@@ -34,12 +34,44 @@ class Analise:
 
 # 22. Qual a probabilidade de um número específico(como o 13) sair em um único sorteio?
 
+
     def mostrar_prob_numero_especifico(self, numero=13):
         prob = 15 / 25
         print(
             f"\nProbabilidade de o número {numero} ser sorteado em um concurso:")
         print(f"{prob:.2f} ({prob*100:.2f}%)")
 
+
+# 23. Por que, mesmo com tantos dados, não é possível prever o próximo resultado com precisão?
+'''
+Porque cada sorteio é independente e a Lotofácil é um jogo de azar com natureza
+aleatória. Apesar de podermos observar frequências passadas, não há uma relação
+causal entre um sorteio e o próximo.
+'''
+
+
+# 24. Você acha que algum modelo matemático ou inteligência artificial poderia
+# acertar os números da Lotofácil? Por quê?
+'''
+Não. Porque em jogos verdadeiramente aleatórios, não há nenhum padrão a ser aprendido.
+É possivel analisar os dados e auxiliar em decisões, mas não pdemos prever resultados
+aleatórios com precisão. 
+'''
+
+
+# 25. Como a ilusão de padrões pode enganar apostadores que confiam em estatísticas?
+'''
+As pessoas tendem a ver padrões onde não existe. Muitas coias acontecem apenas por 
+coincidência.
+'''
+
+
+# 26. Vale a pena apostar com base em análise de dados? O que os dados mostram sobre isso?
+'''
+Análise de dados pode ajudar a entender o jogo ou escolher combinações mais equilibradas.
+Mas não aumenta a chanche real de ganhar, os dados mostram que, estatisticamente,
+as chances de acerto são extremamente baixas, mesmo após centenas de concursos.
+'''
 
 if __name__ == '__main__':
     analise = Analise(caminho_arquivo)
