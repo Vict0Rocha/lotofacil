@@ -185,6 +185,51 @@ class Analise:
         print(f"\nSorteio com mais números pares: Sorteio {sorteio_index}")
         print(f"Números pares: {max_pares}")
 
+# 11. Quantos concursos tiveram exatamente 8 números pares e 7 ímpares? E quantos tiveram 8 ímpares e 7 pares?
+    def contar_concursos_com_distribuicao_pares_impares(self):
+        pares_8_impares_7 = 0
+        impares_8_pares_7 = 0
+
+        for linha in self.df.loc[:, 'N1':'N15'].values:
+            pares = sum(1 for n in linha if n % 2 == 0)
+            impares = 15 - pares
+
+            if pares == 8 and impares == 7:
+                pares_8_impares_7 += 1
+            elif impares == 8 and pares == 7:
+                impares_8_pares_7 += 1
+
+        print(f"\nConcursos com 8 pares e 7 ímpares: {pares_8_impares_7}")
+        print(f"Concursos com 8 ímpares e 7 pares: {impares_8_pares_7}")
+
+# 12. Qual foi o sorteio com a menor quantidade de números acima de 20?
+    def mostrar_sorteio_com_menos_acima_de_20(self):
+        menor_qtd = 15  # máximo possível
+        sorteio_index = None
+
+        for idx, linha in enumerate(self.df.loc[:, 'N1':'N15'].values, start=1):
+            qtd = sum(1 for n in linha if n > 20)
+            if qtd < menor_qtd:
+                menor_qtd = qtd
+                sorteio_index = idx
+
+        print(
+            f"\nSorteio com menos números > 20: Concurso {sorteio_index} ({menor_qtd} números)")
+
+# 13. Qual foi o sorteio com a menor quantidade de números abaixo de 5?
+    def mostrar_sorteio_com_menos_ate_5(self):
+        menor_qtd = 15  # máximo possível
+        sorteio_index = None
+
+        for idx, linha in enumerate(self.df.loc[:, 'N1':'N15'].values, start=1):
+            qtd = sum(1 for n in linha if n <= 5)
+            if qtd < menor_qtd:
+                menor_qtd = qtd
+                sorteio_index = idx
+
+        print(
+            f"\nSorteio com menos números <= 5: Concurso {sorteio_index} ({menor_qtd} números)")
+
 
 if __name__ == '__main__':
     analise = Analise(caminho_arquivo)
@@ -208,4 +253,10 @@ if __name__ == '__main__':
     analise.mostrar_sorteio_com_mais_impares()  # 9
     print(60*'-')
     analise.mostrar_sorteio_com_mais_pares()  # 10
+    print(60*'-')
+    analise.contar_concursos_com_distribuicao_pares_impares()  # 11
+    print(60*'-')
+    analise.mostrar_sorteio_com_menos_acima_de_20()  # 12
+    print(60*'-')
+    analise.mostrar_sorteio_com_menos_ate_5()  # 13
     print(60*'-')
