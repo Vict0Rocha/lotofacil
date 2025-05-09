@@ -1,4 +1,5 @@
 import pandas as pd
+from math import comb
 from pathlib import Path
 from collections import defaultdict
 
@@ -275,37 +276,101 @@ class Analise:
         else:
             print("→ Não há tendência clara entre baixos e altos.")
 
+# 16. Nos últimos 100 concursos, algum número aumentou significativamente sua frequência? Qual?
+    def mostrar_aumento_frequencia_ultimos_100(self):
+        total_concursos = len(self.df)
+        ultimos_100 = self.df.tail(100).loc[:, 'N1':'N15'].melt(
+            value_name='Numero')['Numero']
+        anteriores = self.df.head(
+            total_concursos - 100).loc[:, 'N1':'N15'].melt(value_name='Numero')['Numero']
+
+        freq_ultimos = ultimos_100.value_counts(normalize=True)
+        freq_anteriores = anteriores.value_counts(normalize=True)
+
+        aumento_relativo = (freq_ultimos - freq_anteriores).fillna(0)
+        numero_maior_aumento = aumento_relativo.idxmax()
+        valor_maior_aumento = aumento_relativo.max()
+
+        print("\nNúmero com maior aumento de frequência nos últimos 100 concursos:")
+        print(
+            f"Número: {numero_maior_aumento} (aumento relativo: {valor_maior_aumento:.4f})")
+
+# 17. Algum número ficou mais de 50 concursos sem ser sorteado? Qual?
+    def mostrar_maior_ausencia_acima_de_50(self):
+        ausencias: dict[int, int] = {}
+
+        for numero in self.frequencias.index.tolist():
+            maior_ausencia = 0
+            atual_ausencia = 0
+
+            for linha in self.df.loc[:, 'N1':'N15'].values:
+                if numero not in linha:
+                    atual_ausencia += 1
+                    maior_ausencia = max(maior_ausencia, atual_ausencia)
+                else:
+                    atual_ausencia = 0
+
+            ausencias[int(numero)] = maior_ausencia
+
+        maior_numero, maior_qtd = max(ausencias.items(), key=lambda x: x[1])
+        if maior_qtd > 50:
+            print(
+                f"\nNúmero com ausência > 50 concursos: {maior_numero} ({maior_qtd} concursos)")
+        else:
+            print(
+                f"\nNenhum número ficou mais de 50 concursos sem ser sorteado. Maior ausência: {maior_qtd} (Número: {maior_numero})")
+
+# 18. Quantas vezes cada número apareceu?
+    def mostrar_frequencia_todos_numeros(self):
+        print("\nFrequência total de cada número:")
+        for numero, freq in self.frequencias.sort_index().items():
+            print(f"{numero}: {freq}")
+
+# 19. Quantas e quais as combinações diferentes de 15 números entre 01 e 25 podem ser feitas?
+    def mostrar_qtd_combinacoes_possiveis(self):
+        total_combinacoes = comb(25, 15)
+        print(
+            f"\nNúmero total de combinações possíveis entre 15 e 25: {total_combinacoes:,}")
+
 
 if __name__ == '__main__':
     analise = Analise(caminho_arquivo)
 
-    # analise.mostrar_mais_frequentes()  # 1
-    # print(60*'-')
-    # analise.mostrar_menos_frequentes()  # 2
-    # print(60*'-')
-    # analise.mostrar_diferenca_extremos()  # 3
-    # print(60*'-')
-    # analise.mostrar_maior_sequencia_consecutiva()  # 4
-    # print(60*'-')
-    # analise.mostrar_maior_ausencia_consecutiva()  # 5
-    # print(60*'-')
-    # analise.mostrar_maior_sequencia_numeros_consecutivos()  # 6
-    # print(60*'-')
-    # analise.mostrar_media_pares_impares()  # 7
-    # print(60*'-')
-    # analise.mostrar_frequencia_grupos_sequenciais()  # 8
-    # print(60*'-')
-    # analise.mostrar_sorteio_com_mais_impares()  # 9
-    # print(60*'-')
-    # analise.mostrar_sorteio_com_mais_pares()  # 10
-    # print(60*'-')
-    # analise.contar_concursos_com_distribuicao_pares_impares()  # 11
-    # print(60*'-')
-    # analise.mostrar_sorteio_com_menos_acima_de_20()  # 12
-    # print(60*'-')
-    # analise.mostrar_sorteio_com_menos_ate_5()  # 13
+    analise.mostrar_mais_frequentes()  # 1
+    print(60*'-')
+    analise.mostrar_menos_frequentes()  # 2
+    print(60*'-')
+    analise.mostrar_diferenca_extremos()  # 3
+    print(60*'-')
+    analise.mostrar_maior_sequencia_consecutiva()  # 4
+    print(60*'-')
+    analise.mostrar_maior_ausencia_consecutiva()  # 5
+    print(60*'-')
+    analise.mostrar_maior_sequencia_numeros_consecutivos()  # 6
+    print(60*'-')
+    analise.mostrar_media_pares_impares()  # 7
+    print(60*'-')
+    analise.mostrar_frequencia_grupos_sequenciais()  # 8
+    print(60*'-')
+    analise.mostrar_sorteio_com_mais_impares()  # 9
+    print(60*'-')
+    analise.mostrar_sorteio_com_mais_pares()  # 10
+    print(60*'-')
+    analise.contar_concursos_com_distribuicao_pares_impares()  # 11
+    print(60*'-')
+    analise.mostrar_sorteio_com_menos_acima_de_20()  # 12
+    print(60*'-')
+    analise.mostrar_sorteio_com_menos_ate_5()  # 13
     print(60*'-')
     analise.mostrar_media_por_faixa()  # 14
     print(60*'-')
     analise.mostrar_tendencia_baixos_ou_altos()  # 15
+    print(60*'-')
+    analise.mostrar_aumento_frequencia_ultimos_100()  # 16
+    print(60*'-')
+    analise.mostrar_maior_ausencia_acima_de_50()  # 17
+    print(60*'-')
+    analise.mostrar_frequencia_todos_numeros()  # 18
+    print(60*'-')
+    analise.mostrar_qtd_combinacoes_possiveis()  # 19
     print(60*'-')
