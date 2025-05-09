@@ -157,67 +157,55 @@ class Analise:
         else:
             print("\nNenhum grupo de 5 ou mais números sequenciais foi repetido.")
 
-
 # 9. Qual sorteio teve mais números ímpares?
-#    def mostrar_sorteio_mais_impares(self):
-#         max_impares = 0
-#         sorteio_index: int = -1
-#         numeros_sorteados = []
+    def mostrar_sorteio_com_mais_impares(self):
+        max_impares = 0
+        sorteio_index = None
 
-#         for idx, linha in self.df.loc[:, 'N1':'N15'].iterrows():
-#             numeros = linha.tolist()
-#             impares = sum(1 for n in numeros if n % 2 != 0)
-#             if impares > max_impares:
-#                 max_impares = impares
-#                 sorteio_index = int(idx)
-#                 numeros_sorteados = numeros
+        for idx, linha in enumerate(self.df.loc[:, 'N1':'N15'].values, start=1):
+            impares = sum(1 for n in linha if n % 2 != 0)
+            if impares > max_impares:
+                max_impares = impares
+                sorteio_index = idx
 
-#         if sorteio_index != -1:
-#             print(f"\nSorteio com mais números ímpares:")
-#             print(f"Sorteio #{sorteio_index + 1} com {max_impares} ímpares")
-#             print(f"Números sorteados: {sorted(numeros_sorteados)}")
-#         else:
-#             print("Nenhum sorteio encontrado.")
-
-#         print(
-#             f"\nSorteio com mais números ímpares: {max_impares} (Sorteio #{sorteio_index + 1})")
-
+        print(f"\nSorteio com mais números ímpares: Sorteio {sorteio_index}")
+        print(f"Números ímpares: {max_impares}")
 
 # 10. Qual sorteio teve mais números pares?
-
-    def mostrar_sorteio_mais_pares(self):
+    def mostrar_sorteio_com_mais_pares(self):
         max_pares = 0
         sorteio_index = None
 
-        for idx, linha in self.df.loc[:, 'N1':'N15'].iterrows():
+        for idx, linha in enumerate(self.df.loc[:, 'N1':'N15'].values, start=1):
             pares = sum(1 for n in linha if n % 2 == 0)
             if pares > max_pares:
                 max_pares = pares
                 sorteio_index = idx
 
-        print(
-            f"\nSorteio com mais números pares: {max_pares} (Sorteio #{sorteio_index + 1})")
+        print(f"\nSorteio com mais números pares: Sorteio {sorteio_index}")
+        print(f"Números pares: {max_pares}")
 
 
 if __name__ == '__main__':
     analise = Analise(caminho_arquivo)
 
-    analise.mostrar_mais_frequentes()
+    analise.mostrar_mais_frequentes()  # 1
     print(60*'-')
-    analise.mostrar_menos_frequentes()
+    analise.mostrar_menos_frequentes()  # 2
     print(60*'-')
-    analise.mostrar_diferenca_extremos()
+    analise.mostrar_diferenca_extremos()  # 3
     print(60*'-')
-    analise.mostrar_maior_sequencia_consecutiva()
+    analise.mostrar_maior_sequencia_consecutiva()  # 4
     print(60*'-')
-    analise.mostrar_maior_ausencia_consecutiva()
+    analise.mostrar_maior_ausencia_consecutiva()  # 5
     print(60*'-')
-    analise.mostrar_maior_sequencia_numeros_consecutivos()
+    analise.mostrar_maior_sequencia_numeros_consecutivos()  # 6
     print(60*'-')
-    analise.mostrar_media_pares_impares()
+    analise.mostrar_media_pares_impares()  # 7
     print(60*'-')
-    analise.mostrar_frequencia_grupos_sequenciais()
+    analise.mostrar_frequencia_grupos_sequenciais()  # 8
     print(60*'-')
-    # analise.mostrar_sorteio_mais_impares()
+    analise.mostrar_sorteio_com_mais_impares()  # 9
     print(60*'-')
-    analise.mostrar_sorteio_mais_pares()
+    analise.mostrar_sorteio_com_mais_pares()  # 10
+    print(60*'-')
