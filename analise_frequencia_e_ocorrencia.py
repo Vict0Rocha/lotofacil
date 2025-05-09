@@ -1,4 +1,5 @@
 import pandas as pd
+from math import comb
 from pathlib import Path
 from collections import defaultdict
 
@@ -157,67 +158,219 @@ class Analise:
         else:
             print("\nNenhum grupo de 5 ou mais números sequenciais foi repetido.")
 
-
 # 9. Qual sorteio teve mais números ímpares?
-#    def mostrar_sorteio_mais_impares(self):
-#         max_impares = 0
-#         sorteio_index: int = -1
-#         numeros_sorteados = []
+    def mostrar_sorteio_com_mais_impares(self):
+        max_impares = 0
+        sorteio_index = None
 
-#         for idx, linha in self.df.loc[:, 'N1':'N15'].iterrows():
-#             numeros = linha.tolist()
-#             impares = sum(1 for n in numeros if n % 2 != 0)
-#             if impares > max_impares:
-#                 max_impares = impares
-#                 sorteio_index = int(idx)
-#                 numeros_sorteados = numeros
+        for idx, linha in enumerate(self.df.loc[:, 'N1':'N15'].values, start=1):
+            impares = sum(1 for n in linha if n % 2 != 0)
+            if impares > max_impares:
+                max_impares = impares
+                sorteio_index = idx
 
-#         if sorteio_index != -1:
-#             print(f"\nSorteio com mais números ímpares:")
-#             print(f"Sorteio #{sorteio_index + 1} com {max_impares} ímpares")
-#             print(f"Números sorteados: {sorted(numeros_sorteados)}")
-#         else:
-#             print("Nenhum sorteio encontrado.")
-
-#         print(
-#             f"\nSorteio com mais números ímpares: {max_impares} (Sorteio #{sorteio_index + 1})")
-
+        print(f"\nSorteio com mais números ímpares: Sorteio {sorteio_index}")
+        print(f"Números ímpares: {max_impares}")
 
 # 10. Qual sorteio teve mais números pares?
-
-    def mostrar_sorteio_mais_pares(self):
+    def mostrar_sorteio_com_mais_pares(self):
         max_pares = 0
         sorteio_index = None
 
-        for idx, linha in self.df.loc[:, 'N1':'N15'].iterrows():
+        for idx, linha in enumerate(self.df.loc[:, 'N1':'N15'].values, start=1):
             pares = sum(1 for n in linha if n % 2 == 0)
             if pares > max_pares:
                 max_pares = pares
                 sorteio_index = idx
 
+        print(f"\nSorteio com mais números pares: Sorteio {sorteio_index}")
+        print(f"Números pares: {max_pares}")
+
+# 11. Quantos concursos tiveram exatamente 8 números pares e 7 ímpares? E quantos tiveram 8 ímpares e 7 pares?
+    def contar_concursos_com_distribuicao_pares_impares(self):
+        pares_8_impares_7 = 0
+        impares_8_pares_7 = 0
+
+        for linha in self.df.loc[:, 'N1':'N15'].values:
+            pares = sum(1 for n in linha if n % 2 == 0)
+            impares = 15 - pares
+
+            if pares == 8 and impares == 7:
+                pares_8_impares_7 += 1
+            elif impares == 8 and pares == 7:
+                impares_8_pares_7 += 1
+
+        print(f"\nConcursos com 8 pares e 7 ímpares: {pares_8_impares_7}")
+        print(f"Concursos com 8 ímpares e 7 pares: {impares_8_pares_7}")
+
+# 12. Qual foi o sorteio com a menor quantidade de números acima de 20?
+    def mostrar_sorteio_com_menos_acima_de_20(self):
+        menor_qtd = 15  # máximo possível
+        sorteio_index = None
+
+        for idx, linha in enumerate(self.df.loc[:, 'N1':'N15'].values, start=1):
+            qtd = sum(1 for n in linha if n > 20)
+            if qtd < menor_qtd:
+                menor_qtd = qtd
+                sorteio_index = idx
+
         print(
-            f"\nSorteio com mais números pares: {max_pares} (Sorteio #{sorteio_index + 1})")
+            f"\nSorteio com menos números > 20: Concurso {sorteio_index} ({menor_qtd} números)")
+
+# 13. Qual foi o sorteio com a menor quantidade de números abaixo de 5?
+    def mostrar_sorteio_com_menos_ate_5(self):
+        menor_qtd = 15  # máximo possível
+        sorteio_index = None
+
+        for idx, linha in enumerate(self.df.loc[:, 'N1':'N15'].values, start=1):
+            qtd = sum(1 for n in linha if n <= 5)
+            if qtd < menor_qtd:
+                menor_qtd = qtd
+                sorteio_index = idx
+
+        print(
+            f"\nSorteio com menos números <= 5: Concurso {sorteio_index} ({menor_qtd} números)")
+
+# 14. Quantos números sorteados estão geralmente nas faixas: 01–05, 06–10, 11–15, 16–20 e 21–25?
+    def mostrar_media_por_faixa(self):
+        faixas = {
+            '01-05': range(1, 6),
+            '06-10': range(6, 11),
+            '11-15': range(11, 16),
+            '16-20': range(16, 21),
+            '21-25': range(21, 26),
+        }
+        totais = {faixa: 0 for faixa in faixas}
+        total_sorteios = len(self.df)
+
+        for linha in self.df.loc[:, 'N1':'N15'].values:
+            for faixa, intervalo in faixas.items():
+                totais[faixa] += sum(1 for n in linha if n in intervalo)
+
+        print("\nMédia de números por faixa:")
+        for faixa, total in totais.items():
+            media = total / total_sorteios
+            print(f"{faixa}: {media:.2f}")
+
+# 15. Há uma tendência de sorteios com mais números baixos (01–12) ou altos (13–25)? Justifique com dados.
+    def mostrar_tendencia_baixos_ou_altos(self):
+        total_baixos = 0  # 01–12
+        total_altos = 0   # 13–25
+        total_sorteios = len(self.df)
+
+        for linha in self.df.loc[:, 'N1':'N15'].values:
+            total_baixos += sum(1 for n in linha if 1 <= n <= 12)
+            total_altos += sum(1 for n in linha if 13 <= n <= 25)
+
+        media_baixos = total_baixos / total_sorteios
+        media_altos = total_altos / total_sorteios
+
+        print("\nTendência entre números baixos (01–12) e altos (13–25):")
+        print(f"Média de números baixos por sorteio: {media_baixos:.2f}")
+        print(f"Média de números altos por sorteio: {media_altos:.2f}")
+
+        if media_baixos > media_altos:
+            print("→ Há uma leve tendência a sorteios com mais números BAIXOS.")
+        elif media_altos > media_baixos:
+            print("→ Há uma leve tendência a sorteios com mais números ALTOS.")
+        else:
+            print("→ Não há tendência clara entre baixos e altos.")
+
+# 16. Nos últimos 100 concursos, algum número aumentou significativamente sua frequência? Qual?
+    def mostrar_aumento_frequencia_ultimos_100(self):
+        total_concursos = len(self.df)
+        ultimos_100 = self.df.tail(100).loc[:, 'N1':'N15'].melt(
+            value_name='Numero')['Numero']
+        anteriores = self.df.head(
+            total_concursos - 100).loc[:, 'N1':'N15'].melt(value_name='Numero')['Numero']
+
+        freq_ultimos = ultimos_100.value_counts(normalize=True)
+        freq_anteriores = anteriores.value_counts(normalize=True)
+
+        aumento_relativo = (freq_ultimos - freq_anteriores).fillna(0)
+        numero_maior_aumento = aumento_relativo.idxmax()
+        valor_maior_aumento = aumento_relativo.max()
+
+        print("\nNúmero com maior aumento de frequência nos últimos 100 concursos:")
+        print(
+            f"Número: {numero_maior_aumento} (aumento relativo: {valor_maior_aumento:.4f})")
+
+# 17. Algum número ficou mais de 50 concursos sem ser sorteado? Qual?
+    def mostrar_maior_ausencia_acima_de_50(self):
+        ausencias: dict[int, int] = {}
+
+        for numero in self.frequencias.index.tolist():
+            maior_ausencia = 0
+            atual_ausencia = 0
+
+            for linha in self.df.loc[:, 'N1':'N15'].values:
+                if numero not in linha:
+                    atual_ausencia += 1
+                    maior_ausencia = max(maior_ausencia, atual_ausencia)
+                else:
+                    atual_ausencia = 0
+
+            ausencias[int(numero)] = maior_ausencia
+
+        maior_numero, maior_qtd = max(ausencias.items(), key=lambda x: x[1])
+        if maior_qtd > 50:
+            print(
+                f"\nNúmero com ausência > 50 concursos: {maior_numero} ({maior_qtd} concursos)")
+        else:
+            print(
+                f"\nNenhum número ficou mais de 50 concursos sem ser sorteado. Maior ausência: {maior_qtd} (Número: {maior_numero})")
+
+# 18. Quantas vezes cada número apareceu?
+    def mostrar_frequencia_todos_numeros(self):
+        print("\nFrequência total de cada número:")
+        for numero, freq in self.frequencias.sort_index().items():
+            print(f"{numero}: {freq}")
+
+# 19. Quantas e quais as combinações diferentes de 15 números entre 01 e 25 podem ser feitas?
+    def mostrar_qtd_combinacoes_possiveis(self):
+        total_combinacoes = comb(25, 15)
+        print(
+            f"\nNúmero total de combinações possíveis entre 15 e 25: {total_combinacoes:,}")
 
 
 if __name__ == '__main__':
     analise = Analise(caminho_arquivo)
 
-    analise.mostrar_mais_frequentes()
+    analise.mostrar_mais_frequentes()  # 1
     print(60*'-')
-    analise.mostrar_menos_frequentes()
+    analise.mostrar_menos_frequentes()  # 2
     print(60*'-')
-    analise.mostrar_diferenca_extremos()
+    analise.mostrar_diferenca_extremos()  # 3
     print(60*'-')
-    analise.mostrar_maior_sequencia_consecutiva()
+    analise.mostrar_maior_sequencia_consecutiva()  # 4
     print(60*'-')
-    analise.mostrar_maior_ausencia_consecutiva()
+    analise.mostrar_maior_ausencia_consecutiva()  # 5
     print(60*'-')
-    analise.mostrar_maior_sequencia_numeros_consecutivos()
+    analise.mostrar_maior_sequencia_numeros_consecutivos()  # 6
     print(60*'-')
-    analise.mostrar_media_pares_impares()
+    analise.mostrar_media_pares_impares()  # 7
     print(60*'-')
-    analise.mostrar_frequencia_grupos_sequenciais()
+    analise.mostrar_frequencia_grupos_sequenciais()  # 8
     print(60*'-')
-    # analise.mostrar_sorteio_mais_impares()
+    analise.mostrar_sorteio_com_mais_impares()  # 9
     print(60*'-')
-    analise.mostrar_sorteio_mais_pares()
+    analise.mostrar_sorteio_com_mais_pares()  # 10
+    print(60*'-')
+    analise.contar_concursos_com_distribuicao_pares_impares()  # 11
+    print(60*'-')
+    analise.mostrar_sorteio_com_menos_acima_de_20()  # 12
+    print(60*'-')
+    analise.mostrar_sorteio_com_menos_ate_5()  # 13
+    print(60*'-')
+    analise.mostrar_media_por_faixa()  # 14
+    print(60*'-')
+    analise.mostrar_tendencia_baixos_ou_altos()  # 15
+    print(60*'-')
+    analise.mostrar_aumento_frequencia_ultimos_100()  # 16
+    print(60*'-')
+    analise.mostrar_maior_ausencia_acima_de_50()  # 17
+    print(60*'-')
+    analise.mostrar_frequencia_todos_numeros()  # 18
+    print(60*'-')
+    analise.mostrar_qtd_combinacoes_possiveis()  # 19
+    print(60*'-')
