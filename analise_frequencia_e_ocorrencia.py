@@ -230,33 +230,82 @@ class Analise:
         print(
             f"\nSorteio com menos números <= 5: Concurso {sorteio_index} ({menor_qtd} números)")
 
+# 14. Quantos números sorteados estão geralmente nas faixas: 01–05, 06–10, 11–15, 16–20 e 21–25?
+    def mostrar_media_por_faixa(self):
+        faixas = {
+            '01-05': range(1, 6),
+            '06-10': range(6, 11),
+            '11-15': range(11, 16),
+            '16-20': range(16, 21),
+            '21-25': range(21, 26),
+        }
+        totais = {faixa: 0 for faixa in faixas}
+        total_sorteios = len(self.df)
+
+        for linha in self.df.loc[:, 'N1':'N15'].values:
+            for faixa, intervalo in faixas.items():
+                totais[faixa] += sum(1 for n in linha if n in intervalo)
+
+        print("\nMédia de números por faixa:")
+        for faixa, total in totais.items():
+            media = total / total_sorteios
+            print(f"{faixa}: {media:.2f}")
+
+# 15. Há uma tendência de sorteios com mais números baixos (01–12) ou altos (13–25)? Justifique com dados.
+    def mostrar_tendencia_baixos_ou_altos(self):
+        total_baixos = 0  # 01–12
+        total_altos = 0   # 13–25
+        total_sorteios = len(self.df)
+
+        for linha in self.df.loc[:, 'N1':'N15'].values:
+            total_baixos += sum(1 for n in linha if 1 <= n <= 12)
+            total_altos += sum(1 for n in linha if 13 <= n <= 25)
+
+        media_baixos = total_baixos / total_sorteios
+        media_altos = total_altos / total_sorteios
+
+        print("\nTendência entre números baixos (01–12) e altos (13–25):")
+        print(f"Média de números baixos por sorteio: {media_baixos:.2f}")
+        print(f"Média de números altos por sorteio: {media_altos:.2f}")
+
+        if media_baixos > media_altos:
+            print("→ Há uma leve tendência a sorteios com mais números BAIXOS.")
+        elif media_altos > media_baixos:
+            print("→ Há uma leve tendência a sorteios com mais números ALTOS.")
+        else:
+            print("→ Não há tendência clara entre baixos e altos.")
+
 
 if __name__ == '__main__':
     analise = Analise(caminho_arquivo)
 
-    analise.mostrar_mais_frequentes()  # 1
+    # analise.mostrar_mais_frequentes()  # 1
+    # print(60*'-')
+    # analise.mostrar_menos_frequentes()  # 2
+    # print(60*'-')
+    # analise.mostrar_diferenca_extremos()  # 3
+    # print(60*'-')
+    # analise.mostrar_maior_sequencia_consecutiva()  # 4
+    # print(60*'-')
+    # analise.mostrar_maior_ausencia_consecutiva()  # 5
+    # print(60*'-')
+    # analise.mostrar_maior_sequencia_numeros_consecutivos()  # 6
+    # print(60*'-')
+    # analise.mostrar_media_pares_impares()  # 7
+    # print(60*'-')
+    # analise.mostrar_frequencia_grupos_sequenciais()  # 8
+    # print(60*'-')
+    # analise.mostrar_sorteio_com_mais_impares()  # 9
+    # print(60*'-')
+    # analise.mostrar_sorteio_com_mais_pares()  # 10
+    # print(60*'-')
+    # analise.contar_concursos_com_distribuicao_pares_impares()  # 11
+    # print(60*'-')
+    # analise.mostrar_sorteio_com_menos_acima_de_20()  # 12
+    # print(60*'-')
+    # analise.mostrar_sorteio_com_menos_ate_5()  # 13
     print(60*'-')
-    analise.mostrar_menos_frequentes()  # 2
+    analise.mostrar_media_por_faixa()  # 14
     print(60*'-')
-    analise.mostrar_diferenca_extremos()  # 3
-    print(60*'-')
-    analise.mostrar_maior_sequencia_consecutiva()  # 4
-    print(60*'-')
-    analise.mostrar_maior_ausencia_consecutiva()  # 5
-    print(60*'-')
-    analise.mostrar_maior_sequencia_numeros_consecutivos()  # 6
-    print(60*'-')
-    analise.mostrar_media_pares_impares()  # 7
-    print(60*'-')
-    analise.mostrar_frequencia_grupos_sequenciais()  # 8
-    print(60*'-')
-    analise.mostrar_sorteio_com_mais_impares()  # 9
-    print(60*'-')
-    analise.mostrar_sorteio_com_mais_pares()  # 10
-    print(60*'-')
-    analise.contar_concursos_com_distribuicao_pares_impares()  # 11
-    print(60*'-')
-    analise.mostrar_sorteio_com_menos_acima_de_20()  # 12
-    print(60*'-')
-    analise.mostrar_sorteio_com_menos_ate_5()  # 13
+    analise.mostrar_tendencia_baixos_ou_altos()  # 15
     print(60*'-')
