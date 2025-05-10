@@ -1,0 +1,64 @@
+🎲 Probabilidades e Análise Crítica - QUESTÕES DA 23 A 26
+
+23. Por que, mesmo com tantos dados, não é possível prever o próximo resultado com precisão?
+
+Porque cada sorteio é independente e a Lotofácil é um jogo de azar com natureza
+aleatória. Apesar de podermos observar frequências passadas, não há uma relação
+causal entre um sorteio e o próximo.
+
+
+
+24. Você acha que algum modelo matemático ou inteligência artificial poderia acertar os números da Lotofácil? Por quê?
+
+Não. Porque em jogos verdadeiramente aleatórios, não há nenhum padrão a ser aprendido.
+É possivel analisar os dados e auxiliar em decisões, mas não pdemos prever resultados
+aleatórios com precisão. 
+
+
+
+25. Como a ilusão de padrões pode enganar apostadores que confiam em estatísticas?
+
+As pessoas tendem a ver padrões onde não existe. Muitas coias acontecem apenas por 
+coincidência.
+
+
+
+26. Vale a pena apostar com base em análise de dados? O que os dados mostram sobre isso?
+
+Análise de dados pode ajudar a entender o jogo ou escolher combinações mais equilibradas.
+Mas não aumenta a chanche real de ganhar, os dados mostram que, estatisticamente,
+as chances de acerto são extremamente baixas, mesmo após centenas de concursos.
+
+
+🧠 Raciocínio Lógico e Estratégias - QUESTÕES 28 A 32
+
+28. Se você tivesse que montar uma aposta baseada nos dados analisados, como escolheria os números? Explique sua lógica.
+
+Um equilibrio entre números pares e ímpares, distribuição uniforme entre faixas (01–05, 06–10...),
+não colocaria sequencias como (1, 2, 3, 4...). Simplismente porque na minha cabeça faz sentido, 
+já que não tem fundamento estatístico em eventos aleatórios.
+
+
+29. Se você eliminar sempre os 5 números que menos saíram até agora, suas chances aumentam? Justifique.
+
+Não, porque cada número tem a mesma problabilidade de ser sorteado, independente da
+frequência passada.
+
+
+30. É possível montar uma estratégia eficiente com base nos 10 números mais frequentes?
+
+Estatisticamente falando, não. Uma aposta eficiente é mais sobre evitar padrões previsíveis
+do que seguir frequências.
+
+
+31. É mais eficiente escolher números aleatórios ou usar padrões históricos? Por quê?
+
+Aleatórios são mais eficientes por evitar repetir apostas mais populares, como o sorteio 
+é aleatório, apostas equilibradas e distintas têm mais valor prático (na minha cabeça).
+
+
+32. Se você apostasse apenas em múltiplos de 5 (05, 10, 15, 20, 25), quais seriam suas chances reais de acerto?
+
+Muito baixa, estariamos apostando em apenas 5 dos 25 números possíveis, cada sorteio
+sorteia 15 números. A probabilidade de acertar os 15 usando só múltiplos de 5 é, literalmente
+zero (já que 5 números não podem cobrir 15 posições).
